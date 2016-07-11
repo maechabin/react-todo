@@ -20441,44 +20441,63 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var HelleWorld = function (_React$Component) {
-  _inherits(HelleWorld, _React$Component);
+var TodoApp = function (_React$Component) {
+  _inherits(TodoApp, _React$Component);
 
-  function HelleWorld(props) {
-    _classCallCheck(this, HelleWorld);
+  function TodoApp(props) {
+    _classCallCheck(this, TodoApp);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(HelleWorld).call(this, props));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TodoApp).call(this, props));
 
     _this.state = {
-      hello: props.data,
-      world: 'world'
+      todoItem: ['aaa', 'bbb']
     };
     return _this;
   }
 
-  _createClass(HelleWorld, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      this.setState({
-        world: 'react'
-      });
-    }
-  }, {
+  _createClass(TodoApp, [{
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'div',
         null,
-        this.state.hello,
-        ' ',
-        this.state.world
+        _react2.default.createElement(TodoForm, null),
+        _react2.default.createElement(TodoItem, { item: this.state.todoItem })
       );
     }
   }]);
 
-  return HelleWorld;
+  return TodoApp;
 }(_react2.default.Component);
 
-_reactDom2.default.render(_react2.default.createElement(HelleWorld, { data: 'hello' }), document.querySelector('.content'));
+var TodoForm = function TodoForm() {
+  return _react2.default.createElement(
+    'form',
+    null,
+    _react2.default.createElement('input', { type: 'text' }),
+    _react2.default.createElement(
+      'button',
+      null,
+      '送信する'
+    )
+  );
+};
+
+var TodoItem = function TodoItem(props) {
+  var todoNodes = props.item.map(function (item, i) {
+    return _react2.default.createElement(
+      'li',
+      { key: i },
+      item
+    );
+  });
+  return _react2.default.createElement(
+    'ul',
+    null,
+    todoNodes
+  );
+};
+
+_reactDom2.default.render(_react2.default.createElement(TodoApp, null), document.querySelector('.content'));
 
 },{"react":171,"react-dom":29}]},{},[172]);
