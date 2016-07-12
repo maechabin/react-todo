@@ -20450,18 +20450,43 @@ var TodoApp = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TodoApp).call(this, props));
 
     _this.state = {
-      todoItem: ['aaa', 'bbb']
+      inputValue: '',
+      todoItem: []
     };
+    _this.onChange = _this.onChange.bind(_this);
+    _this.onClick = _this.onClick.bind(_this);
     return _this;
   }
 
   _createClass(TodoApp, [{
+    key: 'onChange',
+    value: function onChange(e) {
+      e.preventDefault();
+      var newValue = e.target.value;
+      this.setState(function () {
+        return { inputValue: newValue };
+      });
+    }
+  }, {
+    key: 'onClick',
+    value: function onClick(e) {
+      e.preventDefault();
+      var currentItem = this.state.todoItem;
+      var newItem = currentItem.concat([this.state.inputValue]);
+      this.setState(function () {
+        return {
+          inputValue: '',
+          todoItem: newItem
+        };
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(TodoForm, null),
+        _react2.default.createElement(TodoForm, { value: this.state.inputValue, onChange: this.onChange, onClick: this.onClick }),
         _react2.default.createElement(TodoItem, { item: this.state.todoItem })
       );
     }
@@ -20470,17 +20495,22 @@ var TodoApp = function (_React$Component) {
   return TodoApp;
 }(_react2.default.Component);
 
-var TodoForm = function TodoForm() {
+var TodoForm = function TodoForm(props) {
   return _react2.default.createElement(
     'form',
     null,
-    _react2.default.createElement('input', { type: 'text' }),
+    _react2.default.createElement('input', { type: 'text', value: props.value, onChange: props.onChange }),
     _react2.default.createElement(
       'button',
-      null,
+      { onClick: props.onClick },
       '送信する'
     )
   );
+};
+TodoForm.propTypes = {
+  value: _react2.default.PropTypes.string,
+  onChange: _react2.default.PropTypes.func,
+  onClick: _react2.default.PropTypes.func
 };
 
 var TodoItem = function TodoItem(props) {
@@ -20496,6 +20526,9 @@ var TodoItem = function TodoItem(props) {
     null,
     todoNodes
   );
+};
+TodoItem.propTypes = {
+  item: _react2.default.PropTypes.array
 };
 
 _reactDom2.default.render(_react2.default.createElement(TodoApp, null), document.querySelector('.content'));

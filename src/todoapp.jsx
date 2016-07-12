@@ -5,26 +5,48 @@ class TodoApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      todoItem: ['aaa', 'bbb'],
+      inputValue: '',
+      todoItem: [],
     };
+    this.onChange = this.onChange.bind(this);
+    this.onClick = this.onClick.bind(this);
+  }
+  onChange(e) {
+    e.preventDefault();
+    const newValue = e.target.value;
+    this.setState(() => ({ inputValue: newValue }));
+  }
+  onClick(e) {
+    e.preventDefault();
+    const currentItem = this.state.todoItem;
+    const newItem = currentItem.concat([this.state.inputValue]);
+    this.setState(() => ({
+      inputValue: '',
+      todoItem: newItem,
+    }));
   }
   render() {
     return (
       <div>
-        <TodoForm />
+        <TodoForm value={this.state.inputValue} onChange={this.onChange} onClick={this.onClick} />
         <TodoItem item={this.state.todoItem} />
       </div>
     );
   }
 }
 
-const TodoForm = () => {
+const TodoForm = (props) => {
   return (
     <form>
-      <input type="text" />
-      <button>送信する</button>
+      <input type="text" value={props.value} onChange={props.onChange} />
+      <button onClick={props.onClick}>送信する</button>
     </form>
   );
+};
+TodoForm.propTypes = {
+  value: React.PropTypes.string,
+  onChange: React.PropTypes.func,
+  onClick: React.PropTypes.func,
 };
 
 const TodoItem = (props) => {
@@ -34,6 +56,9 @@ const TodoItem = (props) => {
       {todoNodes}
     </ul>
   );
+};
+TodoItem.propTypes = {
+  item: React.PropTypes.array,
 };
 
 ReactDOM.render(
