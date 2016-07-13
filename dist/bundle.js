@@ -20451,10 +20451,13 @@ var TodoApp = function (_React$Component) {
 
     _this.state = {
       inputValue: '',
-      todoItem: []
+      todoItem: [],
+      id: 0
     };
     _this.onChange = _this.onChange.bind(_this);
-    _this.onClick = _this.onClick.bind(_this);
+    _this.handleSave = _this.handleSave.bind(_this);
+    _this.handleFinish = _this.handleFinish.bind(_this);
+    _this.handleDelete = _this.handleDelete.bind(_this);
     return _this;
   }
 
@@ -20468,17 +20471,37 @@ var TodoApp = function (_React$Component) {
       });
     }
   }, {
-    key: 'onClick',
-    value: function onClick(e) {
+    key: 'handleSave',
+    value: function handleSave(e) {
+      var _this2 = this;
+
       e.preventDefault();
       var currentItem = this.state.todoItem;
-      var newItem = currentItem.concat([this.state.inputValue]);
+      var newItem = currentItem.concat({
+        id: this.state.id,
+        itemName: this.state.inputValue,
+        saveTime: new Date().getTime(),
+        finishTime: NaN,
+        finishFlag: false
+      });
       this.setState(function () {
         return {
           inputValue: '',
-          todoItem: newItem
+          todoItem: newItem,
+          id: _this2.state.id + 1
         };
       });
+    }
+  }, {
+    key: 'handleFinish',
+    value: function handleFinish(e) {
+      var currentItem = this.state.todoItem;
+      console.log(currentItem);
+    }
+  }, {
+    key: 'handleDelete',
+    value: function handleDelete(e) {
+      e.preventDefault();
     }
   }, {
     key: 'render',
@@ -20486,8 +20509,16 @@ var TodoApp = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(TodoForm, { value: this.state.inputValue, onChange: this.onChange, onClick: this.onClick }),
-        _react2.default.createElement(TodoItem, { item: this.state.todoItem })
+        _react2.default.createElement(TodoForm, {
+          value: this.state.inputValue,
+          onChange: this.onChange,
+          handleSave: this.handleSave
+        }),
+        _react2.default.createElement(TodoItem, {
+          item: this.state.todoItem,
+          handleFinish: this.handleFinish,
+          handleDelete: this.handleDelete
+        })
       );
     }
   }]);
@@ -20502,23 +20533,38 @@ var TodoForm = function TodoForm(props) {
     _react2.default.createElement('input', { type: 'text', value: props.value, onChange: props.onChange }),
     _react2.default.createElement(
       'button',
-      { onClick: props.onClick },
-      '送信する'
+      { onClick: props.handleSave },
+      '登録する'
     )
   );
 };
 TodoForm.propTypes = {
   value: _react2.default.PropTypes.string,
   onChange: _react2.default.PropTypes.func,
-  onClick: _react2.default.PropTypes.func
+  handleSave: _react2.default.PropTypes.func
 };
 
 var TodoItem = function TodoItem(props) {
-  var todoNodes = props.item.map(function (item, i) {
+  var handleFinish = function handleFinish(e) {
+    e.preventDefault();
+    console.log(props.item);
+    props.handleFinish(props);
+  };
+  var todoNodes = props.item.map(function (item) {
     return _react2.default.createElement(
       'li',
-      { key: i },
-      item
+      { key: item.id },
+      item.itemName,
+      _react2.default.createElement(
+        'button',
+        { onClick: handleFinish },
+        '完了'
+      ),
+      _react2.default.createElement(
+        'button',
+        { onClick: props.handleDelete },
+        '削除'
+      )
     );
   });
   return _react2.default.createElement(
@@ -20528,7 +20574,9 @@ var TodoItem = function TodoItem(props) {
   );
 };
 TodoItem.propTypes = {
-  item: _react2.default.PropTypes.array
+  item: _react2.default.PropTypes.array,
+  handleFinish: _react2.default.PropTypes.func,
+  handleDelete: _react2.default.PropTypes.func
 };
 
 _reactDom2.default.render(_react2.default.createElement(TodoApp, null), document.querySelector('.content'));
