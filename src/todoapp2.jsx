@@ -35,12 +35,26 @@ class TodoApp extends React.Component {
       id: this.state.id + 1,
     }));
   }
-  handleFinish(e) {
-    const currentItem = this.state.todoItem;
-    console.log(currentItem);
+  handleFinish(id) {
+    const currentItem = this.state.todoItem.concat();
+    const newItem = currentItem.map((item) => {
+      if (id === item.id) {
+        item.finishFlag = true;
+      }
+      return item;
+    });
+    console.log(this.state.todoItem);
+    console.log(newItem);
+    this.setState(() => {
+      todoItem: newItem
+    });
   }
-  handleDelete(e) {
-    e.preventDefault();
+  handleDelete(id) {
+    const currentItem = this.state.todoItem;
+    const newItem = currentItem.filter((item) => (id !== item.id));
+    this.setState(() => ({
+      todoItem: newItem,
+    }));
   }
   render() {
     return (
@@ -69,32 +83,42 @@ const TodoForm = (props) => {
   );
 };
 TodoForm.propTypes = {
-  value: React.PropTypes.string,
+  value: React.PropTypes.string.isRequired,
   onChange: React.PropTypes.func,
   handleSave: React.PropTypes.func,
 };
 
 const TodoItem = (props) => {
-  const handleFinish = (e) => {
-    e.preventDefault();
-    console.log(props.item);
-    props.handleFinish(props);
-  }
   const todoNodes = props.item.map((item) => (
-    <li key={item.id}>
-      {item.itemName}
-      <button onClick={handleFinish}>完了</button>
-      <button onClick={props.handleDelete}>削除</button>
-    </li>
+    <Item {...props} item={item} key={item.id} />
   ));
   return (
-    <ul>
-      {todoNodes}
-    </ul>
+    <ul>{todoNodes}</ul>
   );
 };
 TodoItem.propTypes = {
   item: React.PropTypes.array,
+};
+
+const Item = (props) => {
+  const handleFinish = (e) => {
+    e.preventDefault();
+    props.handleFinish(props.item.id);
+  };
+  const handleDelete = (e) => {
+    e.preventDefault();
+    props.handleDelete(props.item.id);
+  };
+  return (
+    <li>
+      {props.item.itemName}
+      <button onClick={handleFinish}>完了</button>
+      <button onClick={handleDelete}>削除</button>
+    </li>
+  );
+};
+Item.propTypes = {
+  item: React.PropTypes.object,
   handleFinish: React.PropTypes.func,
   handleDelete: React.PropTypes.func,
 };

@@ -20423,6 +20423,8 @@ module.exports = require('./lib/React');
 },{"./lib/React":55}],172:[function(require,module,exports){
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -20494,14 +20496,32 @@ var TodoApp = function (_React$Component) {
     }
   }, {
     key: 'handleFinish',
-    value: function handleFinish(e) {
-      var currentItem = this.state.todoItem;
-      console.log(currentItem);
+    value: function handleFinish(id) {
+      var currentItem = this.state.todoItem.concat();
+      var newItem = currentItem.map(function (item) {
+        if (id === item.id) {
+          item.finishFlag = true;
+        }
+        return item;
+      });
+      console.log(this.state.todoItem);
+      console.log(newItem);
+      this.setState(function () {
+        todoItem: newItem;
+      });
     }
   }, {
     key: 'handleDelete',
-    value: function handleDelete(e) {
-      e.preventDefault();
+    value: function handleDelete(id) {
+      var currentItem = this.state.todoItem;
+      var newItem = currentItem.filter(function (item) {
+        return id !== item.id;
+      });
+      this.setState(function () {
+        return {
+          todoItem: newItem
+        };
+      });
     }
   }, {
     key: 'render',
@@ -20539,33 +20559,14 @@ var TodoForm = function TodoForm(props) {
   );
 };
 TodoForm.propTypes = {
-  value: _react2.default.PropTypes.string,
+  value: _react2.default.PropTypes.string.isRequired,
   onChange: _react2.default.PropTypes.func,
   handleSave: _react2.default.PropTypes.func
 };
 
 var TodoItem = function TodoItem(props) {
-  var handleFinish = function handleFinish(e) {
-    e.preventDefault();
-    console.log(props.item);
-    props.handleFinish(props);
-  };
   var todoNodes = props.item.map(function (item) {
-    return _react2.default.createElement(
-      'li',
-      { key: item.id },
-      item.itemName,
-      _react2.default.createElement(
-        'button',
-        { onClick: handleFinish },
-        '完了'
-      ),
-      _react2.default.createElement(
-        'button',
-        { onClick: props.handleDelete },
-        '削除'
-      )
-    );
+    return _react2.default.createElement(Item, _extends({}, props, { item: item, key: item.id }));
   });
   return _react2.default.createElement(
     'ul',
@@ -20574,7 +20575,36 @@ var TodoItem = function TodoItem(props) {
   );
 };
 TodoItem.propTypes = {
-  item: _react2.default.PropTypes.array,
+  item: _react2.default.PropTypes.array
+};
+
+var Item = function Item(props) {
+  var handleFinish = function handleFinish(e) {
+    e.preventDefault();
+    props.handleFinish(props.item.id);
+  };
+  var handleDelete = function handleDelete(e) {
+    e.preventDefault();
+    props.handleDelete(props.item.id);
+  };
+  return _react2.default.createElement(
+    'li',
+    null,
+    props.item.itemName,
+    _react2.default.createElement(
+      'button',
+      { onClick: handleFinish },
+      '完了'
+    ),
+    _react2.default.createElement(
+      'button',
+      { onClick: handleDelete },
+      '削除'
+    )
+  );
+};
+Item.propTypes = {
+  item: _react2.default.PropTypes.object,
   handleFinish: _react2.default.PropTypes.func,
   handleDelete: _react2.default.PropTypes.func
 };
