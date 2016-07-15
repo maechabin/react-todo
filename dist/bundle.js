@@ -20481,11 +20481,14 @@ var TodoApp = function (_React$Component) {
       var currentItem = this.state.todoItem;
       var newItem = currentItem.concat({
         id: this.state.id,
-        itemName: this.state.inputValue,
+        itemName: this.state.inputValue.trim(),
         saveTime: new Date().getTime(),
         finishTime: NaN,
         finishFlag: false
       });
+      if (!this.state.inputValue) {
+        return;
+      }
       this.setState(function () {
         return {
           inputValue: '',
@@ -20497,17 +20500,16 @@ var TodoApp = function (_React$Component) {
   }, {
     key: 'handleFinish',
     value: function handleFinish(id) {
-      var currentItem = this.state.todoItem.concat();
-      var newItem = currentItem.map(function (item) {
-        if (id === item.id) {
-          item.finishFlag = true;
-        }
-        return item;
-      });
-      console.log(this.state.todoItem);
-      console.log(newItem);
-      this.setState(function () {
-        todoItem: newItem;
+      this.setState(function (currentState) {
+        return {
+          todoItem: currentState.todoItem.map(function (item) {
+            var newItem = item;
+            if (id === item.id) {
+              newItem.finishFlag = true;
+            }
+            return newItem;
+          })
+        };
       });
     }
   }, {

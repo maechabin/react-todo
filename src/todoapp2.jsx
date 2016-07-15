@@ -24,11 +24,14 @@ class TodoApp extends React.Component {
     const currentItem = this.state.todoItem;
     const newItem = currentItem.concat({
       id: this.state.id,
-      itemName: this.state.inputValue,
+      itemName: this.state.inputValue.trim(),
       saveTime: new Date().getTime(),
       finishTime: NaN,
       finishFlag: false,
     });
+    if (!this.state.inputValue) {
+      return;
+    }
     this.setState(() => ({
       inputValue: '',
       todoItem: newItem,
@@ -36,18 +39,15 @@ class TodoApp extends React.Component {
     }));
   }
   handleFinish(id) {
-    const currentItem = this.state.todoItem.concat();
-    const newItem = currentItem.map((item) => {
-      if (id === item.id) {
-        item.finishFlag = true;
-      }
-      return item;
-    });
-    console.log(this.state.todoItem);
-    console.log(newItem);
-    this.setState(() => {
-      todoItem: newItem
-    });
+    this.setState((currentState) => ({
+      todoItem: currentState.todoItem.map((item) => {
+        const newItem = item;
+        if (id === item.id) {
+          newItem.finishFlag = true;
+        }
+        return newItem;
+      }),
+    }));
   }
   handleDelete(id) {
     const currentItem = this.state.todoItem;
