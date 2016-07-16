@@ -20505,7 +20505,8 @@ var TodoApp = function (_React$Component) {
           todoItem: currentState.todoItem.map(function (item) {
             var newItem = item;
             if (id === item.id) {
-              newItem.finishFlag = true;
+              newItem.finishFlag = newItem.finishFlag !== true;
+              newItem.finishTime = new Date().getFullYear() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getDate();
             }
             return newItem;
           })
@@ -20537,7 +20538,7 @@ var TodoApp = function (_React$Component) {
           handleSave: this.handleSave
         }),
         _react2.default.createElement(TodoItem, {
-          item: this.state.todoItem,
+          todoItem: this.state.todoItem,
           handleFinish: this.handleFinish,
           handleDelete: this.handleDelete
         })
@@ -20567,7 +20568,7 @@ TodoForm.propTypes = {
 };
 
 var TodoItem = function TodoItem(props) {
-  var todoNodes = props.item.map(function (item) {
+  var todoNodes = props.todoItem.map(function (item) {
     return _react2.default.createElement(Item, _extends({}, props, { item: item, key: item.id }));
   });
   return _react2.default.createElement(
@@ -20589,14 +20590,26 @@ var Item = function Item(props) {
     e.preventDefault();
     props.handleDelete(props.item.id);
   };
+  var itemName = function itemName() {
+    if (props.item.finishFlag) {
+      return _react2.default.createElement(
+        'del',
+        null,
+        props.item.itemName
+      );
+    }
+    return props.item.itemName;
+  };
+  var finishTime = props.item.finishFlag === true ? props.item.finishTime : '';
   return _react2.default.createElement(
     'li',
     null,
-    props.item.itemName,
     _react2.default.createElement(
-      'button',
-      { onClick: handleFinish },
-      '完了'
+      'label',
+      null,
+      _react2.default.createElement('input', { type: 'checkbox', checked: props.item.finishFlag, onChange: handleFinish }),
+      itemName(),
+      finishTime
     ),
     _react2.default.createElement(
       'button',

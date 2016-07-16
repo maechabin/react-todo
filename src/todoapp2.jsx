@@ -43,7 +43,9 @@ class TodoApp extends React.Component {
       todoItem: currentState.todoItem.map((item) => {
         const newItem = item;
         if (id === item.id) {
-          newItem.finishFlag = true;
+          newItem.finishFlag = newItem.finishFlag !== true;
+          newItem.finishTime =
+            `${new Date().getFullYear()}/${new Date().getMonth() + 1}/${new Date().getDate()}`;
         }
         return newItem;
       }),
@@ -65,7 +67,7 @@ class TodoApp extends React.Component {
           handleSave={this.handleSave}
         />
         <TodoItem
-          item={this.state.todoItem}
+          todoItem={this.state.todoItem}
           handleFinish={this.handleFinish}
           handleDelete={this.handleDelete}
         />
@@ -74,14 +76,12 @@ class TodoApp extends React.Component {
   }
 }
 
-const TodoForm = (props) => {
-  return (
-    <form>
-      <input type="text" value={props.value} onChange={props.onChange} />
-      <button onClick={props.handleSave}>登録する</button>
-    </form>
-  );
-};
+const TodoForm = (props) => (
+  <form>
+    <input type="text" value={props.value} onChange={props.onChange} />
+    <button onClick={props.handleSave}>登録する</button>
+  </form>
+);
 TodoForm.propTypes = {
   value: React.PropTypes.string.isRequired,
   onChange: React.PropTypes.func,
@@ -89,7 +89,7 @@ TodoForm.propTypes = {
 };
 
 const TodoItem = (props) => {
-  const todoNodes = props.item.map((item) => (
+  const todoNodes = props.todoItem.map((item) => (
     <Item {...props} item={item} key={item.id} />
   ));
   return (
@@ -109,10 +109,20 @@ const Item = (props) => {
     e.preventDefault();
     props.handleDelete(props.item.id);
   };
+  const itemName = () => {
+    if (props.item.finishFlag) {
+      return (<del>{props.item.itemName}</del>);
+    }
+    return props.item.itemName;
+  };
+  const finishTime = (props.item.finishFlag === true) ? props.item.finishTime : '';
   return (
     <li>
-      {props.item.itemName}
-      <button onClick={handleFinish}>完了</button>
+      <label>
+        <input type="checkbox" checked={props.item.finishFlag} onChange={handleFinish} />
+        {itemName()}
+        {finishTime}
+      </label>
       <button onClick={handleDelete}>削除</button>
     </li>
   );
