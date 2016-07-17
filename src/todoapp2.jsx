@@ -44,8 +44,12 @@ class TodoApp extends React.Component {
         const newItem = item;
         if (id === item.id) {
           newItem.finishFlag = newItem.finishFlag !== true;
-          newItem.finishTime =
-            `${new Date().getFullYear()}/${new Date().getMonth() + 1}/${new Date().getDate()}`;
+          if (newItem.finishFlag) {
+            newItem.finishTime
+              = `${new Date().getFullYear()}/${new Date().getMonth() + 1}/${new Date().getDate()}`;
+          } else {
+            newItem.finishTime = null;
+          }
         }
         return newItem;
       }),
@@ -97,12 +101,11 @@ const TodoItem = (props) => {
   );
 };
 TodoItem.propTypes = {
-  item: React.PropTypes.array,
+  todoItem: React.PropTypes.array,
 };
 
 const Item = (props) => {
-  const handleFinish = (e) => {
-    e.preventDefault();
+  const handleFinish = () => {
     props.handleFinish(props.item.id);
   };
   const handleDelete = (e) => {
@@ -115,11 +118,12 @@ const Item = (props) => {
     }
     return props.item.itemName;
   };
-  const finishTime = (props.item.finishFlag === true) ? props.item.finishTime : '';
+  const finishTime = (props.item.finishFlag === true);
+  const checked = (props.item.finishFlag);
   return (
     <li>
       <label>
-        <input type="checkbox" checked={props.item.finishFlag} onChange={handleFinish} />
+        <input type="checkbox" checked={checked} onChange={handleFinish} />
         {itemName()}
         {finishTime}
       </label>

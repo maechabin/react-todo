@@ -20506,7 +20506,11 @@ var TodoApp = function (_React$Component) {
             var newItem = item;
             if (id === item.id) {
               newItem.finishFlag = newItem.finishFlag !== true;
-              newItem.finishTime = new Date().getFullYear() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getDate();
+              if (newItem.finishFlag) {
+                newItem.finishTime = new Date().getFullYear() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getDate();
+              } else {
+                newItem.finishTime = null;
+              }
             }
             return newItem;
           })
@@ -20578,12 +20582,11 @@ var TodoItem = function TodoItem(props) {
   );
 };
 TodoItem.propTypes = {
-  item: _react2.default.PropTypes.array
+  todoItem: _react2.default.PropTypes.array
 };
 
 var Item = function Item(props) {
-  var handleFinish = function handleFinish(e) {
-    e.preventDefault();
+  var handleFinish = function handleFinish() {
     props.handleFinish(props.item.id);
   };
   var handleDelete = function handleDelete(e) {
@@ -20600,14 +20603,15 @@ var Item = function Item(props) {
     }
     return props.item.itemName;
   };
-  var finishTime = props.item.finishFlag === true ? props.item.finishTime : '';
+  var finishTime = props.item.finishFlag === true;
+  var checked = props.item.finishFlag;
   return _react2.default.createElement(
     'li',
     null,
     _react2.default.createElement(
       'label',
       null,
-      _react2.default.createElement('input', { type: 'checkbox', checked: props.item.finishFlag, onChange: handleFinish }),
+      _react2.default.createElement('input', { type: 'checkbox', checked: checked, onChange: handleFinish }),
       itemName(),
       finishTime
     ),
