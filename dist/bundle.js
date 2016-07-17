@@ -20456,7 +20456,7 @@ var TodoApp = function (_React$Component) {
       todoItem: [],
       id: 0
     };
-    _this.onChange = _this.onChange.bind(_this);
+    _this.handleInput = _this.handleInput.bind(_this);
     _this.handleSave = _this.handleSave.bind(_this);
     _this.handleFinish = _this.handleFinish.bind(_this);
     _this.handleDelete = _this.handleDelete.bind(_this);
@@ -20464,9 +20464,16 @@ var TodoApp = function (_React$Component) {
   }
 
   _createClass(TodoApp, [{
-    key: 'onChange',
-    value: function onChange(e) {
-      e.preventDefault();
+    key: 'getCurrentDate',
+    value: function getCurrentDate() {
+      var currentYear = new Date().getFullYear();
+      var currentMonth = new Date().getMonth() + 1;
+      var currentDay = new Date().getDate();
+      return currentYear + '/' + currentMonth + '/' + currentDay;
+    }
+  }, {
+    key: 'handleInput',
+    value: function handleInput(e) {
       var newValue = e.target.value;
       this.setState(function () {
         return { inputValue: newValue };
@@ -20482,8 +20489,8 @@ var TodoApp = function (_React$Component) {
       var newItem = currentItem.concat({
         id: this.state.id,
         itemName: this.state.inputValue.trim(),
-        saveTime: new Date().getTime(),
-        finishTime: NaN,
+        saveTime: this.getCurrentDate(),
+        finishTime: null,
         finishFlag: false
       });
       if (!this.state.inputValue) {
@@ -20500,6 +20507,8 @@ var TodoApp = function (_React$Component) {
   }, {
     key: 'handleFinish',
     value: function handleFinish(id) {
+      var _this3 = this;
+
       this.setState(function (currentState) {
         return {
           todoItem: currentState.todoItem.map(function (item) {
@@ -20507,7 +20516,7 @@ var TodoApp = function (_React$Component) {
             if (id === item.id) {
               newItem.finishFlag = newItem.finishFlag !== true;
               if (newItem.finishFlag) {
-                newItem.finishTime = new Date().getFullYear() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getDate();
+                newItem.finishTime = _this3.getCurrentDate();
               } else {
                 newItem.finishTime = null;
               }
@@ -20538,7 +20547,7 @@ var TodoApp = function (_React$Component) {
         null,
         _react2.default.createElement(TodoForm, {
           value: this.state.inputValue,
-          onChange: this.onChange,
+          handleInput: this.handleInput,
           handleSave: this.handleSave
         }),
         _react2.default.createElement(TodoItem, {
@@ -20557,7 +20566,7 @@ var TodoForm = function TodoForm(props) {
   return _react2.default.createElement(
     'form',
     null,
-    _react2.default.createElement('input', { type: 'text', value: props.value, onChange: props.onChange }),
+    _react2.default.createElement('input', { type: 'text', value: props.value, onChange: props.handleInput }),
     _react2.default.createElement(
       'button',
       { onClick: props.handleSave },
@@ -20567,7 +20576,7 @@ var TodoForm = function TodoForm(props) {
 };
 TodoForm.propTypes = {
   value: _react2.default.PropTypes.string.isRequired,
-  onChange: _react2.default.PropTypes.func,
+  handleInput: _react2.default.PropTypes.func,
   handleSave: _react2.default.PropTypes.func
 };
 
@@ -20603,7 +20612,7 @@ var Item = function Item(props) {
     }
     return props.item.itemName;
   };
-  var finishTime = props.item.finishFlag === true;
+  var finishTime = props.item.finishFlag === true ? props.item.finishTime : null;
   var checked = props.item.finishFlag;
   return _react2.default.createElement(
     'li',

@@ -9,13 +9,18 @@ class TodoApp extends React.Component {
       todoItem: [],
       id: 0,
     };
-    this.onChange = this.onChange.bind(this);
+    this.handleInput = this.handleInput.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleFinish = this.handleFinish.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
-  onChange(e) {
-    e.preventDefault();
+  getCurrentDate() {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1;
+    const currentDay = new Date().getDate();
+    return `${currentYear}/${currentMonth}/${currentDay}`;
+  }
+  handleInput(e) {
     const newValue = e.target.value;
     this.setState(() => ({ inputValue: newValue }));
   }
@@ -25,8 +30,8 @@ class TodoApp extends React.Component {
     const newItem = currentItem.concat({
       id: this.state.id,
       itemName: this.state.inputValue.trim(),
-      saveTime: new Date().getTime(),
-      finishTime: NaN,
+      saveTime: this.getCurrentDate(),
+      finishTime: null,
       finishFlag: false,
     });
     if (!this.state.inputValue) {
@@ -45,8 +50,7 @@ class TodoApp extends React.Component {
         if (id === item.id) {
           newItem.finishFlag = newItem.finishFlag !== true;
           if (newItem.finishFlag) {
-            newItem.finishTime
-              = `${new Date().getFullYear()}/${new Date().getMonth() + 1}/${new Date().getDate()}`;
+            newItem.finishTime = this.getCurrentDate();
           } else {
             newItem.finishTime = null;
           }
@@ -67,7 +71,7 @@ class TodoApp extends React.Component {
       <div>
         <TodoForm
           value={this.state.inputValue}
-          onChange={this.onChange}
+          handleInput={this.handleInput}
           handleSave={this.handleSave}
         />
         <TodoItem
@@ -82,13 +86,13 @@ class TodoApp extends React.Component {
 
 const TodoForm = (props) => (
   <form>
-    <input type="text" value={props.value} onChange={props.onChange} />
+    <input type="text" value={props.value} onChange={props.handleInput} />
     <button onClick={props.handleSave}>登録する</button>
   </form>
 );
 TodoForm.propTypes = {
   value: React.PropTypes.string.isRequired,
-  onChange: React.PropTypes.func,
+  handleInput: React.PropTypes.func,
   handleSave: React.PropTypes.func,
 };
 
@@ -118,7 +122,7 @@ const Item = (props) => {
     }
     return props.item.itemName;
   };
-  const finishTime = (props.item.finishFlag === true);
+  const finishTime = (props.item.finishFlag === true) ? props.item.finishTime : null;
   const checked = (props.item.finishFlag);
   return (
     <li>
