@@ -110,24 +110,17 @@ const TodoItem = (props) => {
   const todoNodes = props.todoItem.map((item) => (
     <Item {...props} item={item} key={item.id} />
   ));
-  const style = {
-    textAlign: 'left',
-  };
   return (
-    <Table>
-      <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-        <TableRow>
-          <TableHeaderColumn style={style}>Done</TableHeaderColumn>
-          <TableHeaderColumn style={style}>ToDo</TableHeaderColumn>
-          <TableHeaderColumn style={style}>登録日</TableHeaderColumn>
-          <TableHeaderColumn style={style}>完了日</TableHeaderColumn>
-          <TableHeaderColumn style={style}>削除</TableHeaderColumn>
-        </TableRow>
-      </TableHeader>
-      <ReactCSSTransitionGroup component="TableBody" transitionName="fade" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
-        {todoNodes}
-      </ReactCSSTransitionGroup>
-    </Table>
+    <ReactCSSTransitionGroup component="table" style={{ width: '100%' }} transitionName="fade" transitionAppear={false} transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+      <tr>
+        <th style={{ width: 'calc(100% / 5)', textAlign: 'left' }}>Done</th>
+        <th style={{ width: 'calc(100% / 5)', textAlign: 'left' }}>ToDo</th>
+        <th style={{ width: 'calc(100% / 5)', textAlign: 'left' }}>登録日</th>
+        <th style={{ width: 'calc(100% / 5)', textAlign: 'left' }}>完了日</th>
+        <th style={{ width: 'calc(100% / 5)', textAlign: 'left' }}>削除</th>
+      </tr>
+      {todoNodes}
+    </ReactCSSTransitionGroup>
   );
 };
 TodoItem.propTypes = {
@@ -152,23 +145,23 @@ const Item = (props) => {
   const finishTime = (props.item.finishFlag === true) ? props.item.finishTime : '-';
   const checked = (props.item.finishFlag);
   return (
-    <TableRow>
-      <TableRowColumn>
-        <Checkbox checked={checked} onCheck={handleFinish} />
-      </TableRowColumn>
-      <TableRowColumn style={{ textAlign: 'left' }}>
+    <tr>
+      <td>
+        <input type="checkbox" checked={checked} onChange={handleFinish} />
+      </td>
+      <td style={{ textAlign: 'left' }}>
         {itemName()}
-      </TableRowColumn>
-      <TableRowColumn>
+      </td>
+      <td>
         <p><span style={{ color: '#e57373' }}>{saveTime}</span></p>
-      </TableRowColumn>
-      <TableRowColumn>
+      </td>
+      <td>
         <span style={{ color: '#7986CB' }}>{finishTime}</span>
-      </TableRowColumn>
-      <TableRowColumn>
+      </td>
+      <td>
         <RaisedButton label="削除する" secondary onClick={handleDelete} />
-      </TableRowColumn>
-    </TableRow>
+      </td>
+    </tr>
   );
 };
 Item.propTypes = {
