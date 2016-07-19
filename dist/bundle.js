@@ -35108,6 +35108,10 @@ var _reactAddonsCssTransitionGroup = require('react-addons-css-transition-group'
 
 var _reactAddonsCssTransitionGroup2 = _interopRequireDefault(_reactAddonsCssTransitionGroup);
 
+var _reactAddonsTransitionGroup = require('react-addons-transition-group');
+
+var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransitionGroup);
+
 var _Checkbox = require('material-ui/Checkbox');
 
 var _Checkbox2 = _interopRequireDefault(_Checkbox);
@@ -35281,39 +35285,50 @@ var TodoItem = function TodoItem(props) {
   var todoNodes = props.todoItem.map(function (item) {
     return _react2.default.createElement(Item, _extends({}, props, { item: item, key: item.id }));
   });
+  var style = {
+    textAlign: 'left'
+  };
   return _react2.default.createElement(
-    _reactAddonsCssTransitionGroup2.default,
-    { component: 'table', style: { width: '100%' }, transitionName: 'fade', transitionAppear: false, transitionEnterTimeout: 300, transitionLeaveTimeout: 300 },
+    _Table.Table,
+    null,
     _react2.default.createElement(
-      'tr',
-      null,
+      _Table.TableHeader,
+      { displaySelectAll: false, adjustForCheckbox: false },
       _react2.default.createElement(
-        'th',
-        { style: { width: 'calc(100% / 5)', textAlign: 'left' } },
-        'Done'
-      ),
-      _react2.default.createElement(
-        'th',
-        { style: { width: 'calc(100% / 5)', textAlign: 'left' } },
-        'ToDo'
-      ),
-      _react2.default.createElement(
-        'th',
-        { style: { width: 'calc(100% / 5)', textAlign: 'left' } },
-        '登録日'
-      ),
-      _react2.default.createElement(
-        'th',
-        { style: { width: 'calc(100% / 5)', textAlign: 'left' } },
-        '完了日'
-      ),
-      _react2.default.createElement(
-        'th',
-        { style: { width: 'calc(100% / 5)', textAlign: 'left' } },
-        '削除'
+        _Table.TableRow,
+        null,
+        _react2.default.createElement(
+          _Table.TableHeaderColumn,
+          { style: style },
+          'Done'
+        ),
+        _react2.default.createElement(
+          _Table.TableHeaderColumn,
+          { style: style },
+          'ToDo'
+        ),
+        _react2.default.createElement(
+          _Table.TableHeaderColumn,
+          { style: style },
+          '登録日'
+        ),
+        _react2.default.createElement(
+          _Table.TableHeaderColumn,
+          { style: style },
+          '完了日'
+        ),
+        _react2.default.createElement(
+          _Table.TableHeaderColumn,
+          { style: style },
+          '削除'
+        )
       )
     ),
-    todoNodes
+    _react2.default.createElement(
+      _Table.TableBody,
+      null,
+      todoNodes
+    )
   );
 };
 TodoItem.propTypes = {
@@ -35342,20 +35357,20 @@ var Item = function Item(props) {
   var finishTime = props.item.finishFlag === true ? props.item.finishTime : '-';
   var checked = props.item.finishFlag;
   return _react2.default.createElement(
-    'tr',
-    null,
+    _reactAddonsCssTransitionGroup2.default,
+    { component: _Table.TableRow, transitionAppear: true, transitionName: 'fade', transitionEnterTimeout: 300, transitionLeaveTimeout: 300 },
     _react2.default.createElement(
-      'td',
+      _Table.TableRowColumn,
       null,
-      _react2.default.createElement('input', { type: 'checkbox', checked: checked, onChange: handleFinish })
+      _react2.default.createElement(_Checkbox2.default, { checked: checked, onCheck: handleFinish })
     ),
     _react2.default.createElement(
-      'td',
+      _Table.TableRowColumn,
       { style: { textAlign: 'left' } },
       itemName()
     ),
     _react2.default.createElement(
-      'td',
+      _Table.TableRowColumn,
       null,
       _react2.default.createElement(
         'p',
@@ -35368,7 +35383,7 @@ var Item = function Item(props) {
       )
     ),
     _react2.default.createElement(
-      'td',
+      _Table.TableRowColumn,
       null,
       _react2.default.createElement(
         'span',
@@ -35377,7 +35392,7 @@ var Item = function Item(props) {
       )
     ),
     _react2.default.createElement(
-      'td',
+      _Table.TableRowColumn,
       null,
       _react2.default.createElement(_RaisedButton2.default, { label: '削除する', secondary: true, onClick: handleDelete })
     )
@@ -35391,4 +35406,4 @@ Item.propTypes = {
 
 _reactDom2.default.render(_react2.default.createElement(TodoApp, null), document.querySelector('.content'));
 
-},{"material-ui/Checkbox":175,"material-ui/RaisedButton":179,"material-ui/Table":189,"material-ui/TextField":195,"material-ui/styles/MuiThemeProvider":205,"react":385,"react-addons-css-transition-group":228,"react-dom":230,"react-tap-event-plugin":237}]},{},[399]);
+},{"material-ui/Checkbox":175,"material-ui/RaisedButton":179,"material-ui/Table":189,"material-ui/TextField":195,"material-ui/styles/MuiThemeProvider":205,"react":385,"react-addons-css-transition-group":228,"react-addons-transition-group":229,"react-dom":230,"react-tap-event-plugin":237}]},{},[399]);

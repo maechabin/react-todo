@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import ReactTransitionGroup from 'react-addons-transition-group';
 import Checkbox from 'material-ui/Checkbox';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -124,9 +125,9 @@ const TodoItem = (props) => {
           <TableHeaderColumn style={style}>削除</TableHeaderColumn>
         </TableRow>
       </TableHeader>
-      <ReactCSSTransitionGroup component="TableBody" transitionName="fade" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+      <TableBody>
         {todoNodes}
-      </ReactCSSTransitionGroup>
+      </TableBody>
     </Table>
   );
 };
@@ -152,7 +153,7 @@ const Item = (props) => {
   const finishTime = (props.item.finishFlag === true) ? props.item.finishTime : '-';
   const checked = (props.item.finishFlag);
   return (
-    <TableRow>
+    <ReactCSSTransitionGroup component={TableRow} transitionAppear transitionName="fade" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
       <TableRowColumn>
         <Checkbox checked={checked} onCheck={handleFinish} />
       </TableRowColumn>
@@ -168,7 +169,7 @@ const Item = (props) => {
       <TableRowColumn>
         <RaisedButton label="削除する" secondary onClick={handleDelete} />
       </TableRowColumn>
-    </TableRow>
+    </ReactCSSTransitionGroup>
   );
 };
 Item.propTypes = {
