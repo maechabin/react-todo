@@ -35358,7 +35358,13 @@ var Item = function Item(props) {
   var checked = props.item.finishFlag;
   return _react2.default.createElement(
     _reactAddonsCssTransitionGroup2.default,
-    { component: _Table.TableRow, transitionAppear: true, transitionName: 'fade', transitionEnterTimeout: 300, transitionLeaveTimeout: 300 },
+    {
+      component: _Table.TableRow,
+      transitionAppear: true,
+      transitionName: 'fade',
+      transitionEnterTimeout: 300,
+      transitionLeaveTimeout: 300
+    },
     _react2.default.createElement(
       _Table.TableRowColumn,
       null,

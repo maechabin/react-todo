@@ -153,7 +153,13 @@ const Item = (props) => {
   const finishTime = (props.item.finishFlag === true) ? props.item.finishTime : '-';
   const checked = (props.item.finishFlag);
   return (
-    <ReactCSSTransitionGroup component={TableRow} transitionAppear transitionName="fade" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+    <ReactCSSTransitionGroup
+      component={TableRow}
+      transitionAppear
+      transitionName="fade"
+      transitionEnterTimeout={300}
+      transitionLeaveTimeout={300}
+    >
       <TableRowColumn>
         <Checkbox checked={checked} onCheck={handleFinish} />
       </TableRowColumn>

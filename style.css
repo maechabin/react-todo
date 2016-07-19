@@ -3,7 +3,7 @@
 }
 .fade-appear.fade-appear-active {
   opacity: 1;
-  transition: all 1s ease-in;
+  transition: all .3s ease-in;
 }
 .fade-enter {
   opacity: .1;
