@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Checkbox from 'material-ui/Checkbox';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -110,17 +109,29 @@ const TodoItem = (props) => {
   const todoNodes = props.todoItem.map((item) => (
     <Item {...props} item={item} key={item.id} />
   ));
+  const style = {
+    width: 'calc(100% / 5)',
+    textAlign: 'left',
+  };
   return (
-    <ReactCSSTransitionGroup component="table" style={{ width: '100%' }} transitionName="fade" transitionAppear={false} transitionEnterTimeout={300} transitionLeaveTimeout={300}>
-      <tr>
-        <th style={{ width: 'calc(100% / 5)', textAlign: 'left' }}>Done</th>
-        <th style={{ width: 'calc(100% / 5)', textAlign: 'left' }}>ToDo</th>
-        <th style={{ width: 'calc(100% / 5)', textAlign: 'left' }}>登録日</th>
-        <th style={{ width: 'calc(100% / 5)', textAlign: 'left' }}>完了日</th>
-        <th style={{ width: 'calc(100% / 5)', textAlign: 'left' }}>削除</th>
-      </tr>
-      {todoNodes}
-    </ReactCSSTransitionGroup>
+    <table style={{ width: '100%' }}>
+      <ReactCSSTransitionGroup
+        component="tbody"
+        transitionName="fade"
+        transitionAppear={false}
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={500}
+      >
+        <tr>
+          <th style={style}>Done</th>
+          <th style={style}>ToDo</th>
+          <th style={style}>登録日</th>
+          <th style={style}>完了日</th>
+          <th style={style}>削除</th>
+        </tr>
+        {todoNodes}
+      </ReactCSSTransitionGroup>
+    </table>
   );
 };
 TodoItem.propTypes = {
@@ -147,9 +158,9 @@ const Item = (props) => {
   return (
     <tr>
       <td>
-        <input type="checkbox" checked={checked} onChange={handleFinish} />
+        <Checkbox checked={checked} onCheck={handleFinish} />
       </td>
-      <td style={{ textAlign: 'left' }}>
+      <td>
         {itemName()}
       </td>
       <td>

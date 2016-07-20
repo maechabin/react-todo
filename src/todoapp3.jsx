@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import ReactTransitionGroup from 'react-addons-transition-group';
 import Checkbox from 'material-ui/Checkbox';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
@@ -157,8 +156,6 @@ const Item = (props) => {
       component={TableRow}
       transitionAppear
       transitionName="fade"
-      transitionEnterTimeout={300}
-      transitionLeaveTimeout={300}
     >
       <TableRowColumn>
         <Checkbox checked={checked} onCheck={handleFinish} />
