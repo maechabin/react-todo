@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 class TodoApp extends React.Component {
   constructor(props) {
@@ -55,7 +56,15 @@ const TodoItem = (props) => {
   const todoNodes = props.todoItem.map((item, i) => <li key={i}>{item}</li>);
   return (
     <ul>
+      <ReactCSSTransitionGroup
+        transitionName="fade"
+        transitionAppear
+        transitionAppearTimeout={500}
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={500}
+      >
       {todoNodes}
+      </ReactCSSTransitionGroup>
     </ul>
   );
 };
